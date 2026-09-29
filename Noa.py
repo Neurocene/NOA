@@ -94,10 +94,10 @@ if "chat" not in st.session_state:
 # Mostriamo tutti i messaggi inviati
 for messaggio in st.session_state.chat:
     if messaggio["ruolo"] == "user":
-        with st.chat_message("user", avatar="👨‍‍🏫"):
+        with st.chat_message("user"):
             st.write(messaggio["testo"])
     else:
-        with st.chat_message("assistant", avatar="🤖"):
+        with st.chat_message("assistant"):
             pensiero_testo = messaggio.get("pensiero", "Analisi interna...")
             st.info(f"🧠 **Mente Interna (Analisi Transazionale):**\n_{pensiero_testo}_")
             st.write(f"🗣️ **Noa:** {messaggio['testo']}")
@@ -105,7 +105,7 @@ for messaggio in st.session_state.chat:
 domanda = st.chat_input("Parla con Noa...")
 
 if domanda:
-    with st.chat_message("user", avatar="👨‍🏫"):
+    with st.chat_message("user"):
         st.write(domanda)
     
     if not API_KEY:
