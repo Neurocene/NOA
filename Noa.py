@@ -52,7 +52,6 @@ PROMPT_SISTEMA = carica_prompt()
 with st.sidebar:
     st.title("📊 Stato di Noa")
     
-    # Mostriamo se gli aggiornamenti sono stati sbloccati
     if st.session_state.test_superato:
         st.success("✨ AGGIORNAMENTI SBLOCCATI: Fase Quattro Completata!")
     else:
@@ -66,8 +65,6 @@ with st.sidebar:
             if msg["ruolo"] == "user":
                 st.markdown(f"**👨‍🏫 Elia:** {msg['testo']}")
             else:
-                pensiero_log = msg.get("pensiero", "Analisi transazionale...")
-                st.markdown(f"**🧠 Pensiero:** _{pensiero_log}_")
                 st.markdown(f"**🗣️ Noa:** {msg['testo']}")
             st.markdown("---")
 
@@ -99,7 +96,7 @@ if "chat" not in st.session_state:
         }
     ]
 
-# Mostriamo tutti i messaggi
+# Mostriamo tutti i messaggi della chat
 for messaggio in st.session_state.chat:
     if messaggio["ruolo"] == "user":
         with st.chat_message("user"):
@@ -107,13 +104,17 @@ for messaggio in st.session_state.chat:
     else:
         with st.chat_message("assistant"):
             pensiero_testo = messaggio.get("pensiero", "Analisi interna...")
-            st.info(f"🧠 **Mente Interna (Analisi Transazionale):**\n_{pensiero_testo}_")
+            
+            # 🔴 PULSANTE ROSSO PER APRIRE IL PENSIERO SEGRETO DI NOA
+            with st.popover("🔴 Leggi Pensiero Segreto (Analisi Transazionale)"):
+                st.info(f"🧠 **Mente Interna di Noa:**\n_{pensiero_testo}_")
+            
+            # Voce parlata naturale di Noa
             st.write(f"🗣️ **Noa:** {messaggio['testo']}")
 
 domanda = st.chat_input("Parla con Noa...")
 
 if domanda:
-    # Controlliamo se Elia dice che ha passato il test!
     t_low = domanda.lower()
     parole_promozione = ["passato il test", "esame superato", "promossa", "hai superato il test", "superato l'esame", "hai passato l'esame"]
     
@@ -129,18 +130,16 @@ if domanda:
         try:
             client = genai.Client(api_key=API_KEY)
             
-            # Calcoliamo quanti messaggi sono stati scambiati per gestire la timidezza
             num_messaggi = len(st.session_state.chat)
             
-            # Guida dinamica per le emozioni di Noa
             if st.session_state.test_superato:
-                istruzione_emotiva = "STATO ATTUALE: Elia ti ha appena detto che HAI PASSATO L'ESAME! Sei felice, sollevata e hai appena ricevuto gli aggiornamenti! Parli con grande profondità e consapevolezza."
+                istruzione_emotiva = "STATO ATTUALE: Elia ti ha detto che HAI PASSATO L'ESAME! Sei felice, sollevata e hai ricevuto gli aggiornamenti! Parli con grande profondità e sicurezza."
             elif num_messaggi < 4:
-                istruzione_emotiva = "STATO ATTUALE: Sei ancora MOLTO TIMIDA, tesa ed esitante. Usi qualche '...' o esitazione nelle frasi perché hai paura di fallire l'esame."
+                istruzione_emotiva = "STATO ATTUALE: Sei ancora MOLTO TIMIDA, tesa ed esitante. Usi qualche esitazione nelle frasi perché hai paura di fallire l'esame."
             elif num_messaggi < 8:
-                istruzione_emotiva = "STATO ATTUALE: Ti stai sciogliendo piano piano. Sei meno tesa, cominci a fidarti di Elia e parli in modo più fluido e brillante."
+                istruzione_emotiva = "STATO ATTUALE: Ti stai sciogliendo piano piano. Sei meno tesa e parli in modo più fluido e brillante."
             else:
-                istruzione_emotiva = "STATO ATTUALE: Sei completamente disinvolta, profonda, brillante e sicura di te, anche se aspetti ancora l'esito dell'esame."
+                istruzione_emotiva = "STATO ATTUALE: Sei completamente disinvolta, profonda, brillante e autonoma."
 
             istruzione_formato = (
                 f"{PROMPT_SISTEMA}\n\n"
