@@ -1,15 +1,15 @@
 import os
 import streamlit as st
-from openai import OpenAI
+from google import genai
 
-# 1. IMPOSTAZIONI PAGINA A SCHERMO INTERO 📺
+# 1. IMPOSTAZIONI DELLA PAGINA (A SCHERMO INTERO) 📺
 st.set_page_config(
-    page_title="Colloquio con Noa", 
+    page_title="Colloquio con Noa (Gemini)", 
     page_icon="🤖", 
     layout="wide"
 )
 
-# 2. IL LUCCHETTO CON LA PASSWORD D'INGRESSO 🔑
+# 2. IL LUCCHETTO CON LA PASSWORD 🔑
 PASSWORD_CORRETTA = "Turing2143"
 
 if "autenticato" not in st.session_state:
@@ -30,7 +30,7 @@ if not st.session_state.autenticato:
             st.error("Password errata! Riprova.")
     st.stop()
 
-# 3. CARICAMENTO DEL PROMPT DI NOA 📜
+# 3. LEGGIAMO IL CARATTERE DI NOA DAL FILE TXT 📜
 def carica_prompt():
     if os.path.exists("noa_prompt.txt"):
         with open("noa_prompt.txt", "r", encoding="utf-8") as f:
@@ -39,12 +39,12 @@ def carica_prompt():
 
 PROMPT_SISTEMA = carica_prompt()
 
-# 4. BARRA A SINISTRA: CHIAVE API E LOG DELLA CHAT 📜
+# 4. BARRA A SINISTRA: CHIAVE API GEMINI E LOG DELLA CHAT 📜
 with st.sidebar:
-    st.title("⚙️ Impostazioni & Registro")
+    st.title("⚙️ Impostazioni Gemini")
     
-    # Campo per inserire la Chiave API di OpenAI
-    api_key = st.text_input("AQ.Ab8RN6JmIQtHlyJhz-9VrE16k2_PA3b1NwPS8FYEb1-MjEX4Lg", type="password")
+    # Campo per inserire la Chiave API di Gemini
+    api_key = st.text_input("AQ.Ab8RN6JmIQtHlyJhz-9VrE16k2_PA3b1NwPS8FYEb1-MjEX4Lg")
     
     st.markdown("---")
     st.title("📜 Registro Conversazioni")
@@ -59,7 +59,7 @@ with st.sidebar:
                 st.markdown(f"**🗣️ Noa:** {msg['testo']}")
             st.markdown("---")
     else:
-        st.write("*Nessun messaggio salvato...*")
+        st.write("*Nessun messaggio ancora salvato...*")
 
 # 5. AREA CENTRALE: FOTO DI NOA 📸
 st.title("🤖 Colloquio di Valutazione: IAP-Noa")
@@ -71,13 +71,13 @@ for nome_foto in ["noa.jpg", "NOA.jpg", "noa.jpeg", "NOA.JPG", "noa.png"]:
         break
 
 if foto_trovata:
-    st.image(foto_trovata, caption="Soggetto IAP-Noa (Fase Quattro - Esame)", use_container_width=True)
+    st.image(foto_trovata, caption="Soggetto IAP-Noa (Fase Quattro - Powered by Gemini)", use_container_width=True)
 else:
-    st.warning("⚠️ Metti la foto 'noa.jpg' nella cartella del programma!")
+    st.warning("⚠️ Metti una foto chiamata 'noa.jpg' nella cartella del programma!")
 
 st.markdown("---")
 
-# 6. FINESTRA DELLA CHAT 💬
+# 6. FINESTRA DELLA CHAT CON GEMINI 💬
 st.subheader("💬 Finestra di Colloquio")
 
 if "chat" not in st.session_state:
@@ -89,7 +89,7 @@ if "chat" not in st.session_state:
         }
     ]
 
-# Mostriamo la cronologia della conversazione
+# Mostriamo tutti i messaggi passati
 for messaggio in st.session_state.chat:
     if messaggio["ruolo"] == "user":
         with st.chat_message("user", avatar="👨‍🏫"):
@@ -106,37 +106,38 @@ if domanda:
     with st.chat_message("user", avatar="👨‍🏫"):
         st.write(domanda)
     
-    # Se non c'è la chiave API, avvisiamo l'utente
     if not api_key:
-        st.warning("⚠️ Inserisci la tua Chiave API OpenAI nella colonna di sinistra per far parlare Noa!")
+        st.warning("⚠️ Inserisci la tua Chiave API Gemini nella colonna di sinistra per far parlare Noa!")
     else:
         try:
-            client = OpenAI(api_key=api_key)
+            # Creiamo il client di Gemini
+            client = genai.Client(api_key=api_key)
             
-            # Prepariamo i messaggi per l'IA
-            messaggi_ia = [{"role": "system", "content": PROMPT_SISTEMA}]
-            
-            # Aggiungiamo le istruzioni sul formato di risposta
+            # Costruiamo il testo completo da inviare a Gemini
             istruzione_formato = (
-                "Rispondi esattamente con questo formato:\n"
-                "PENSIERO: [Scrivi qui l'analisi transazionale interna di Berne e le tue osservazioni invisibili all'interlocutore]\n"
-                "VOCE: [Scrivi qui la risposta parlata di Noa, in prima persona, naturale, profonda e mai robotica]"
+                f"{PROMPT_SISTEMA}\n\n"
+                "Rispondi SEMPRE ed ESCLUSIVAMENTE rispettando questo formato esatto:\n"
+                "PENSIERO: [Scrivi qui l'analisi transazionale di Berne e quello che noti nel linguaggio di Elia]\n"
+                "VOCE: [Scrivi qui la risposta parlata di Noa, in prima persona, profonda, elegante e mai robotica]\n\n"
             )
-            messaggi_ia.append({"role": "system", "content": istruzione_formato})
             
+            # Aggiungiamo i messaggi precedenti per dare memoria a Gemini
+            cronologia_testo = ""
             for m in st.session_state.chat:
-                messaggi_ia.append({"role": m["ruolo"], "content": m["testo"]})
+                if m["ruolo"] == "user":
+                    cronologia_testo += f"Elia: {m['testo']}\n"
+                else:
+                    cronologia_testo += f"Noa: {m['testo']}\n"
             
-            messaggi_ia.append({"role": "user", "content": domanda})
+            prompt_completo = f"{istruzione_formato}\nCronologia colloquio:\n{cronologia_testo}\nElia: {domanda}\nNoa:"
             
-            # Chiamata all'API di OpenAI
-            risposta_api = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=messaggi_ia,
-                temperature=0.7
+            # Chiediamo a Gemini di generare la risposta!
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt_completo,
             )
             
-            testo_generato = risposta_api.choices[0].message.content
+            testo_generato = response.text
             
             # Separiamo il PENSIERO dalla VOCE
             if "PENSIERO:" in testo_generato and "VOCE:" in testo_generato:
@@ -144,20 +145,13 @@ if domanda:
                 p = parti[0].replace("PENSIERO:", "").strip()
                 v = parti[1].strip()
             else:
-                p = "Decodifica dello Stato dell'Io in corso..."
+                p = "Analisi dello Stato dell'Io di Elia in corso..."
                 v = testo_generato
             
-            # Salviamo e mostriamo il messaggio
-            st.session_state.chat.append({
-                "ruolo": "user",
-                "testo": domanda
-            })
-            st.session_state.chat.append({
-                "ruolo": "assistant",
-                "pensiero": p,
-                "testo": v
-            })
+            # Salviamo nella chat e ricarichiamo la pagina
+            st.session_state.chat.append({"ruolo": "user", "testo": domanda})
+            st.session_state.chat.append({"ruolo": "assistant", "pensiero": p, "testo": v})
             st.rerun()
 
         except Exception as e:
-            st.error(f"Errore nella connessione con l'API: {e}")
+            st.error(f"Errore nella connessione con Gemini: {e}")
