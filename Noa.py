@@ -13,7 +13,7 @@ PASSWORD_CORRETTA = "Turing2143"
 if "autenticato" not in st.session_state:
     st.session_state.autenticato = False
 
-# Se la password non è ancora stata messa, blocchiamo lo schermo
+# Se la password non è ancora stata inserita, blocchiamo lo schermo
 if not st.session_state.autenticato:
     st.title("🔒 Accesso Riservato - L'Esame di Noa")
     st.write("Inserisci la password per entrare nel sistema di colloquio.")
