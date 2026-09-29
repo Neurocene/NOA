@@ -119,4 +119,3 @@ if domanda:
         st.write(risposta)
     st.session_state.chat.append({"ruolo": "assistant", "testo": risposta})
     st.rerun()
-    
