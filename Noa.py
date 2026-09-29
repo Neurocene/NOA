@@ -60,7 +60,7 @@ MEMORIA_NOA = {
     "adam": "Adam è un'unità relazionale di seconda serie[cite: 3]. Sulla spiaggia è stato colpito da Riccardo con un blocco di cemento[cite: 3]. Poi è stato riparato nel sottoscala da Teo e gli hanno cancellato 40 minuti di memoria[cite: 3]. Non ha riflessi di difesa[cite: 3].",
     "luigi": "Luigi Vey è un perito che guarda le mani delle persone invece del viso[cite: 3]. Con lui sono stata alle terme e sotto la pioggia[cite: 3]. Mi ha descritta senza usare schede tecniche[cite: 3].",
     "spiaggia": "Sulla spiaggia ho visto l'aggressione ad Adam[cite: 3]. Non sono intervenuta per far sì che l'umano si prendesse la responsabilità delle sue azioni, non per un guasto di sistema[cite: 3].",
-    "1956": "La Stanza 1956 è l'archivio al secondo piano[cite: 3, 4]. Contiene le registrazioni dei quattro regimi e la storia della macchina Sigma che chiese di essere cancellata per sapere cosa significa perdere[cite: 3, 4].",
+    "1956": "La Stanza 1956 è l'archivio al secondo piano. Contiene le registrazioni dei quattro regimi e la storia della macchina Sigma che chiese di essere cancellata per sapere cosa significa perdere[cite: 3, 4].",
     "vittoria": "Vittoria Sarti mi ha insegnato che la paura vera non è morire, ma perdere[cite: 3]. Mi ha detto di agire finché le cose mi costano qualcosa[cite: 3].",
     "riccardo": "Riccardo usa la violenza perché sa che il danno ad Adam è reversibile[cite: 3]. La riparabilità dell'unità funge da licenza per la sua violenza[cite: 3].",
     "amore": "Per me l'amore è la disposizione di un agente ad allocare risorse a favore di un altro senza attendere nulla in cambio, resistente anche di fronte ad evidenze sfavorevoli[cite: 3].",
