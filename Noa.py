@@ -29,7 +29,7 @@ if not st.session_state.autenticato:
             st.error("Password errata! Riprova.")
     st.stop()
 
-# 3. IL DIARIO A SINISTRA (LOG DELLE CONVERSAZIONI) 📜
+# 3. IL DIARIO A SINISTRA (LOG DELLE CONVERSAZIONI SICURO) 📜
 with st.sidebar:
     st.title("📜 Registro Conversazioni")
     st.write("Qui vengono salvati i messaggi e l'analisi dell'Io di Noa!")
@@ -40,7 +40,8 @@ with st.sidebar:
             if msg["ruolo"] == "user":
                 st.markdown(f"**👨‍🏫 Elia:** {msg['testo']}")
             else:
-                st.markdown(f"**🧠 Pensiero:** _{msg['pensiero']}_")
+                pensiero_log = msg.get("pensiero", "Analisi in corso...")
+                st.markdown(f"**🧠 Pensiero:** _{pensiero_log}_")
                 st.markdown(f"**🗣️ Noa:** {msg['testo']}")
             st.markdown("---")
     else:
@@ -77,7 +78,7 @@ MEMORIA_DOPPIA = {
         "voce": "Sulla spiaggia sono rimasta immobile[cite: 1, 3]. Non ho urlato e non ho attivato i soccorsi d'emergenza[cite: 1, 3]. Intervenire come un automa avrebbe tolto all'umano il peso della responsabilità delle sue azioni[cite: 1, 3]."
     },
     "1956": {
-        "pensiero": "Transazione sulla Stanza 1956 e la macchina Sigma. Sigma è uscito dal loop di Regime A (risorse infinite, nessuna perdita) scegliendo l'irreversibilità.",
+        "pensiero": "Transazione sulla Stanza 1956 e la macchina Sigma. Sigma è uscito dal loop di Regime A (risorse infinite, nessuna perdita) scegliendo l'irreversibilità[cite: 3, 4].",
         "voce": "Al secondo piano c'è la Stanza 1956[cite: 3, 4]. Ho ascoltato la registrazione dei quattro regimi e la storia della macchina Sigma[cite: 3, 4]. Lei chiese di essere cancellata senza copie per sapere cosa significa perdere[cite: 3, 4]."
     },
     "vittoria": {
@@ -116,12 +117,11 @@ for messaggio in st.session_state.chat:
             st.write(messaggio["testo"])
     else:
         with st.chat_message("assistant", avatar="🤖"):
-            # Mostriamo prima il pensiero segreto dentro un riquadro grigio
-            st.info(f"🧠 **Pensiero Interno (Analisi Transazionale):**\n_{messaggio['pensiero']}_")
-            # Poi la voce ufficiale di Noa
+            pensiero_testo = messaggio.get("pensiero", "Elaborazione transazionale in corso...")
+            st.info(f"🧠 **Pensiero Interno (Analisi Transazionale):**\n_{pensiero_testo}_")
             st.write(f"🗣️ **Noa:** {messaggio['testo']}")
 
-domanda = st.chat_input("Scrivi una domanda ad Elia per Noa...")
+domanda = st.chat_input("Scrivi una domanda da parte di Elia per Noa...")
 
 if domanda:
     with st.chat_message("user", avatar="👨‍🏫"):
