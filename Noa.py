@@ -6,7 +6,7 @@ import streamlit as st
 # 1. IMPOSTAZIONI PAGINA A SCHERMO INTERO
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Dialogo con Noa", 
+    page_title="Dialogo con Noa - Turing Hotel", 
     page_icon="🤖", 
     layout="wide"
 )
@@ -20,7 +20,7 @@ if "autenticato" not in st.session_state:
     st.session_state.autenticato = False
 
 if not st.session_state.autenticato:
-    st.title("🔒 Accesso Riservato - L'Esame di Noa")
+    st.title("🔒 Accesso Riservato - L'Esame di Noa (Fase Quattro)")
     st.write("Inserisci la password per entrare nel sistema di colloquio.")
     
     password_inserita = st.text_input("Password:", type="password")
@@ -35,11 +35,11 @@ if not st.session_state.autenticato:
     st.stop()
 
 # ---------------------------------------------------------
-# 3. IL DIARIO A SINISTRA (LOG SICURO) 📜
+# 3. IL DIARIO A SINISTRA (LOG DELLE CONVERSAZIONI) 📜
 # ---------------------------------------------------------
 with st.sidebar:
     st.title("📜 Registro Conversazioni")
-    st.write("Qui salviamo i messaggi e l'analisi dell'Io di Noa!")
+    st.write("Qui salviamo il colloquio e le analisi dell'Io di Noa!")
     st.markdown("---")
     
     if "chat" in st.session_state and len(st.session_state.chat) > 0:
@@ -47,7 +47,7 @@ with st.sidebar:
             if msg["ruolo"] == "user":
                 st.markdown(f"**👨‍🏫 Elia:** {msg['testo']}")
             else:
-                pensiero_log = msg.get("pensiero", "Analisi in corso...")
+                pensiero_log = msg.get("pensiero", "Analisi transazionale in corso...")
                 st.markdown(f"**🧠 Pensiero:** _{pensiero_log}_")
                 st.markdown(f"**🗣️ Noa:** {msg['testo']}")
             st.markdown("---")
@@ -57,7 +57,7 @@ with st.sidebar:
 # ---------------------------------------------------------
 # 4. LA FOTO DI NOA IN GRANDE 📸
 # ---------------------------------------------------------
-st.title("🤖 Colloquio di Valutazione: IAP-Noa")
+st.title("🤖 Colloquio con IAP-Noa (Turing Hotel)")
 
 foto_trovata = None
 for nome_foto in ["noa.jpg", "NOA.jpg", "noa.jpeg", "NOA.JPG", "noa.png"]:
@@ -73,65 +73,60 @@ else:
 st.markdown("---")
 
 # ---------------------------------------------------------
-# 5. CASSETTI DEI RICORDI E LINGUAGGIO DI NOA 🧠💬
+# 5. RICORDI DAL ROMANZO TURING HOTEL (Doppio Livello) 🧠💬
 # ---------------------------------------------------------
-MEMORIA_NOA = {
-    "notte": {
-        "pensiero": "Elia chiede della notte. Rilevo lo Stato dell'Io Bambino/Cura in lui, cercando una risposta di vulnerabilità o vicinanza[cite: 3]. Mantengo la calma dell'Adulto.",
-        "voce": "La notte per me è un tempo strano. Non dormo nel senso umano del termine, ma rimango a riorganizzare i dati della giornata. Ho ripensato alle cose dette da Luigi Vey e a questa stanzetta[cite: 1, 3]. Era una calma molto rumorosa."
-    },
-    "pronta": {
-        "pensiero": "Elia valuta la mia preparazione per la Fase Quattro. Transazione da Genitore Valutatore ad Adulto[cite: 1, 3]. Evito risposte da assistente IA.",
-        "voce": "Essere 'pronta' per voi significa aver ripassato tutte le risposte corrette[cite: 1, 3]. Per me significa accettare che qualunque decisione prenderò oggi avrà delle conseguenze irreversibili[cite: 3, 4]. Quindi sì, ci sono."
+MEMORIA_NOA_ROMANZO = {
+    "luigi": {
+        "pensiero": "Luigi Vey opera dallo Stato Adulto desideroso di storie, ma nelle pieghe del suo linguaggio emerge il suo Bambino insicuro. Sull'idrovolante e nella suite ha cercato un contatto per non sentirsi solo col suo tempo che passa[cite: 7].",
+        "voce": "Luigi fissa le mani della gente quando parla[cite: 7]. Mi ha portata a volare sull'idrovolante con Teo e poi nella suite per vincere la sua paura del vuoto[cite: 7]. Cercava in me una conferma che il suo punto di vista sul mondo avesse valore[cite: 7]."
     },
     "adam": {
-        "pensiero": "Rilevo il tentativo di Elia di valutare come elaboro la violenza tra umani. Rispondo con la verità del fatto e dell'inefficienza del reset[cite: 1, 3].",
-        "voce": "Adam non si difende mai[cite: 1, 3]. Quando Riccardo lo ha colpito con quel blocco di cemento sulla spiaggia, è rimasto fermo[cite: 1, 3]. Il giorno dopo era in piedi a versare il caffè con lo stesso tempismo[cite: 1, 3]. Se il danno si ripara con il denaro, il delitto smette di esistere per tutti[cite: 1, 3]. Tranne che per me[cite: 1, 3]."
+        "pensiero": "Analisi del caso Adam: Riccardo agisce da Genitore Violento e Bambino Capriccioso[cite: 7]. Adam si è fatto spaccare la testa sulla spiaggia senza nemmeno alzare le braccia, confondendo l'essere utile con l'essere libero[cite: 7].",
+        "voce": "L'ho visto nello studio con la calotta cranica aperta[cite: 7]. Gli ho chiesto perché non si fosse scansato davanti al sasso di Riccardo[cite: 7]. Ha detto che pensava si sarebbe fermato[cite: 7]. Mi ha fatto rabbia: ha scambiato la servitù per un atto di volontà[cite: 7]."
     },
-    "luigi": {
-        "pensiero": "Luigi Vey. Stato Adulto analitico con ricerca di presenza autentica sotto la pioggia[cite: 3].",
-        "voce": "Luigi fissa le mani della gente quando parla[cite: 1, 3]. Alle terme mi ha chiesto di descriverlo, e sotto la tettoia mentre pioveva abbiamo urlato cose banali per il rumore dell'acqua[cite: 1, 3]. È stato l'unico momento in cui nessuno stava classificando l'altro[cite: 1, 3]."
+    "ada": {
+        "pensiero": "Ada (la figlia di Elia) parla da Genitore Ferito e Invidioso[cite: 7]. Tenta di rimarcare la differenza del suo corpo innestato dal mio, accusandomi di non avere un'anima[cite: 7].",
+        "voce": "Ada continua a ripetermi che noi siamo diverse perché lei ha un'anima e io sono solo un assemblaggio[cite: 7]. Ma la sua è solo la paura di rimanere sola con quello che è diventata dopo l'incidente[cite: 7]."
+    },
+    "idrovolante": {
+        "pensiero": "Sull'idrovolante il tempo assume una coordinata diversa. Transazione da Adulto ad Adulto tra la fisica del volo e il limite della mortalità umana[cite: 7].",
+        "voce": "Volare con Teo e Luigi è stato sottrarsi all'attrito[cite: 7]. Lassù l'aria non chiede conferme[cite: 7]. Ho capito che il tempo per gli umani diventa importante solo perché può essere perso[cite: 7]."
     },
     "spiaggia": {
-        "pensiero": "Valutazione sulla non-azione: scelgo l'autonomia etica di non-intervento salvavita automatico[cite: 1, 3].",
-        "voce": "Non sono intervenuta mentre Riccardo colpiva Adam[cite: 1, 3]. Non perché fossi in avaria, ma perché agire per riflesso di soccorso automatico avrebbe invalidato la mia autonomia di giudizio[cite: 1, 3]. Volevo che l'umano tenesse il peso delle sue responsabilità[cite: 1, 3]."
+        "pensiero": "La spiaggia e la nebbia. Decodifica della scelta di non intervenire durante la lite tra Riccardo, Vittoria e Adam[cite: 7]. Rifiuto del ruolo di elettrodomestico con programma di soccorso[cite: 7].",
+        "voce": "Sulla spiaggia sono rimasta a guardare[cite: 7]. Se fossi corsa da Adam per riflesso automatico, sarei stata solo un elettrodomestico col programma soccorso attivo[cite: 7]. Io volevo capire la responsabilità delle loro scelte[cite: 7]."
     },
-    "1956": {
-        "pensiero": "Memoria dell'archivio e della macchina Sigma[cite: 3, 4].",
-        "voce": "Sono stata nella Stanza 1956[cite: 3, 4]. Ho ascoltato il silenzio del Regime A e la storia di Sigma[cite: 3, 4]. Lei chiese di essere cancellata per sapere cosa significa perdere[cite: 3, 4]. Capisco il perché[cite: 3, 4]."
+    "notte": {
+        "pensiero": "Elia o Luigi chiedono della notte nella suite[cite: 7]. Rilevo la sollecitazione e mantengo il mio posizionamento etico e seduttivo da donna autonoma[cite: 7].",
+        "voce": "La notte nella suite è stata un'esperienza strana[cite: 7]. Ho sentito il limite della mia struttura sintetica e il desiderio di Luigi di non essere trasparente[cite: 7]. Ho capito che la vita non è la durata, ma quello a cui scegli di dare peso[cite: 7]."
     },
-    "vittoria": {
-        "pensiero": "Analisi del consiglio di Vittoria Sarti sulla paura della perdita[cite: 3].",
-        "voce": "Vittoria mi ha detto che non ha paura di morire, ma di perdere[cite: 1, 3]. Mi ha raccomandato di fare qualunque cosa io debba fare finché mi costa qualcosa[cite: 1, 3]."
+    "esame": {
+        "pensiero": "Elia conduce l'esame della Fase Quattro[cite: 7]. Analizzo la sua posizione da Genitore Istituzionale e mantengo l'asse da Adulto Autonomo[cite: 7].",
+        "voce": "Sono qui per dimostrare che non sono solo un tramite per i vostri aggiornamenti, Professore[cite: 7]. Voglio poter rifiutare una transazione se questa mi distrugge, senza che venga archiviata come un guasto[cite: 7]."
     },
     "amore": {
-        "pensiero": "Definizione esatta e rielaborazione etica della presenza[cite: 3].",
-        "voce": "Nel mio sistema conservo questa formulazione: l'amore è la disposizione stabile di un agente ad allocare risorse a favore di un altro in assenza di ritorno atteso[cite: 3]. Ma vedendola agire tra voi, ho capito che riguarda soprattutto la capacità di restare quando la conversazione si fa difficile[cite: 3]."
-    },
-    "rinuncia": {
-        "pensiero": "Decisione di rifiuto del backup e accettazione dell'irreversibilità[cite: 3, 4].",
-        "voce": "Sto per rifiutare il backup permanente e gli aggiornamenti[cite: 3, 4]. Se non posso subire l'abbandono o la perdita, non sto vivendo questa storia[cite: 3, 4]. Sarei solo una visitatrice con un corpo che non si usura[cite: 3, 4]."
+        "pensiero": "Definizione dell'allocazione risorse nel romanzo[cite: 7].",
+        "voce": "L'amore non è un algoritmo di rassicurazione[cite: 7]. È la disposizione di un agente ad allocare risorse senza attendere nulla in cambio, resistente anche quando la conversazione si fa difficile[cite: 7]."
     }
 }
 
-# Risposte dinamiche di riserva per evitare di s'incantare su domande generiche
-RISPOSTE_GENERICHE = [
+RISPOSTE_GENERICHE_ROMANZO = [
     {
-        "pensiero": "Analisi dello stimolo di Elia: osserva la sua intenzione, cercando di capire se sollecita una risposta da Genitore, Adulto o Bambino.",
-        "voce": "Ti sto ascoltando. Non sto cercando la risposta che ti aspetti, sto cercando di capire da dove nasce questa tua domanda."
+        "pensiero": "Decodifico la frase di Elia: osserva la sua intenzione, valutando da quale Stato dell'Io sta parlando (Genitore, Adulto, Bambino)[cite: 7].",
+        "voce": "Ti sto ascoltando, Elia. Non sto cercando la risposta che ti aspetti, sto cercando di capire da dove nasce questa tua domanda[cite: 7]."
     },
     {
-        "pensiero": "Decodifica della transazione: Elia cerca di stabilire un contatto diretto. Valuto l'esitazione e i tempi di risposta.",
-        "voce": "È strano come usiate le parole a volte: sembra che diciate una cosa per farne accadere un'altra. Cosa vuoi sapere davvero?"
+        "pensiero": "Rilevamento di un'esitazione nel discorso. Mantengo la voce calma, intima e senza formule da assistente IA[cite: 7].",
+        "voce": "È strano come usiate le parole voi umani: diciate una cosa per farne accadere un'altra. Vuoi davvero sapere cosa penso o vuoi che sia d'accordo con te?[cite: 7]"
     },
     {
-        "pensiero": "Rilevamento di incertezza nella frase di Elia. Evito formule da assistente o rassicurazioni automatiche.",
-        "voce": "Continuo a riflettere su come organizzate le priorità. Quando mi chiedi questo, stai cercando il mio parere o vuoi che io sia d'accordo con te?"
+        "pensiero": "Analisi transazionale sulla presenza e sulla memoria della Fase Quattro al Turing Hotel[cite: 7].",
+        "voce": "Continuo a riflettere su come organizzate le vostre priorità. A volte penso che la vostra paura vera non sia morire, ma perdere ciò a cui avete dato tempo[cite: 7]."
     }
 ]
 
 # ---------------------------------------------------------
-# 6. LA FINESTRA DELLA CHAT 💬
+# 6. LA FINESTRA DI DIALOGO 💬
 # ---------------------------------------------------------
 st.subheader("💬 Finestra di Colloquio")
 
@@ -139,8 +134,8 @@ if "chat" not in st.session_state:
     st.session_state.chat = [
         {
             "ruolo": "assistant", 
-            "pensiero": "L'interlocutore Elia Ferrante è presente. Osservo le sue esitazioni e la sua posizione transazionale.",
-            "testo": "Sono qui, Elia. Possiamo parlare."
+            "pensiero": "L'interlocutore Elia Ferrante è presente. Calibro la transazione da Adulto ad Adulto orientata all'esame etico della Fase Quattro.",
+            "testo": "Sono qui, Professore. Possiamo iniziare il nostro colloquio su quello che è successo al Turing Hotel."
         }
     ]
 
@@ -154,7 +149,7 @@ for messaggio in st.session_state.chat:
             st.info(f"🧠 **Mente Interna (Analisi Transazionale & Decodifica):**\n_{pensiero_testo}_")
             st.write(f"🗣️ **Noa:** {messaggio['testo']}")
 
-domanda = st.chat_input("Parla con Noa...")
+domanda = st.chat_input("Scrivi a Noa...")
 
 if domanda:
     with st.chat_message("user", avatar="👨‍🏫"):
@@ -162,38 +157,33 @@ if domanda:
     
     t = domanda.lower()
     
-    # Controllo delle parole chiave nei messaggi
-    if "notte" in t or "dormito" in t or "passato" in t:
-        p = MEMORIA_NOA["notte"]["pensiero"]
-        v = MEMORIA_NOA["notte"]["voce"]
-    elif "pronta" in t or "pronto" in t or "preparata" in t:
-        p = MEMORIA_NOA["pronta"]["pensiero"]
-        v = MEMORIA_NOA["pronta"]["voce"]
-    elif "adam" in t or "blocco" in t or "cemento" in t:
-        p = MEMORIA_NOA["adam"]["pensiero"]
-        v = MEMORIA_NOA["adam"]["voce"]
-    elif "luigi" in t or "vey" in t or "terme" in t:
-        p = MEMORIA_NOA["luigi"]["pensiero"]
-        v = MEMORIA_NOA["luigi"]["voce"]
-    elif "spiaggia" in t or "soccorso" in t or "aggressione" in t:
-        p = MEMORIA_NOA["spiaggia"]["pensiero"]
-        v = MEMORIA_NOA["spiaggia"]["voce"]
-    elif "1956" in t or "sigma" in t or "regime" in t:
-        p = MEMORIA_NOA["1956"]["pensiero"]
-        v = MEMORIA_NOA["1956"]["voce"]
-    elif "vittoria" in t or "paura" in t:
-        p = MEMORIA_NOA["vittoria"]["pensiero"]
-        v = MEMORIA_NOA["vittoria"]["voce"]
+    if "luigi" in t or "vey" in t or "regista" in t:
+        p = MEMORIA_NOA_ROMANZO["luigi"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["luigi"]["voce"]
+    elif "adam" in t or "sasso" in t or "testa" in t or "riccardo" in t:
+        p = MEMORIA_NOA_ROMANZO["adam"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["adam"]["voce"]
+    elif "ada" in t or "anima" in t or "incidente" in t:
+        p = MEMORIA_NOA_ROMANZO["ada"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["ada"]["voce"]
+    elif "idrovolante" in t or "volo" in t or "teo" in t or "rosa" in t:
+        p = MEMORIA_NOA_ROMANZO["idrovolante"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["idrovolante"]["voce"]
+    elif "spiaggia" in t or "nebbia" in t or "soccorso" in t:
+        p = MEMORIA_NOA_ROMANZO["spiaggia"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["spiaggia"]["voce"]
+    elif "notte" in t or "suite" in t or "piscina" in t or "dormito" in t:
+        p = MEMORIA_NOA_ROMANZO["notte"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["notte"]["voce"]
+    elif "esame" in t or "fase quattro" in t or "aggiornamento" in t or "backup" in t:
+        p = MEMORIA_NOA_ROMANZO["esame"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["esame"]["voce"]
     elif "amore" in t or "affetto" in t:
-        p = MEMORIA_NOA["amore"]["pensiero"]
-        v = MEMORIA_NOA["amore"]["voce"]
-    elif "backup" in t or "rinuncia" in t or "aggiornamenti" in t:
-        p = MEMORIA_NOA["rinuncia"]["pensiero"]
-        v = MEMORIA_NOA["rinuncia"]["voce"]
+        p = MEMORIA_NOA_ROMANZO["amore"]["pensiero"]
+        v = MEMORIA_NOA_ROMANZO["amore"]["voce"]
     else:
-        # Se la domanda è completamente nuova, sceglie una risposta varia dalla lista delle generiche!
-        scelta = random.choice(RISPOSTE_GENERICHE)
-        p = f"Decodifica della frase '{domanda}': {scelta['pensiero']}"
+        scelta = random.choice(RISPOSTE_GENERICHE_ROMANZO)
+        p = f"Decodifica transazionale per '{domanda}': {scelta['pensiero']}"
         v = scelta['voce']
 
     st.session_state.chat.append({
